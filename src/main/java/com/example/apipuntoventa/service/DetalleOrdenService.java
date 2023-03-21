@@ -42,7 +42,7 @@ public class DetalleOrdenService {
 		return new DetalleOrdenDTO(detalleOrden);
 	}
 
-	public DetalleOrdenDTO guardarDetalleOrden(DetalleOrdenNuevaDTO detalleOrdenNuevaDto){
+	public DetalleOrdenDTO guardarDetalleOrden(DetalleOrdenNuevaDTO detalleOrdenNuevaDto) {
 		Producto producto = obtenerProductoPorId(detalleOrdenNuevaDto.getProductoId());
 		Orden orden = obtenerOrdenPorId(detalleOrdenNuevaDto.getOrdenId());
 
@@ -51,11 +51,8 @@ public class DetalleOrdenService {
 		if (orden == null)
 			throw new NotFoundException("orde con id " + detalleOrdenNuevaDto.getOrdenId() + " no existe");
 
-		DetalleOrden detalleOrdenNueva = new DetalleOrden(
-				detalleOrdenNuevaDto.getNombre(),
-				detalleOrdenNuevaDto.getPrecio(), 
-				detalleOrdenNuevaDto.getCantidad(), 
-				detalleOrdenNuevaDto.getTotal(),
+		DetalleOrden detalleOrdenNueva = new DetalleOrden(detalleOrdenNuevaDto.getNombre(),
+				detalleOrdenNuevaDto.getPrecio(), detalleOrdenNuevaDto.getCantidad(), detalleOrdenNuevaDto.getTotal(),
 				orden, producto);
 
 		return new DetalleOrdenDTO(detalleOrdenRepo.save(detalleOrdenNueva));
@@ -75,7 +72,7 @@ public class DetalleOrdenService {
 		detalleOrden.setNombre(detalleOrdenNuevaDto.getNombre());
 		detalleOrden.setPrecio(detalleOrdenNuevaDto.getPrecio());
 		detalleOrden.setTotal(detalleOrdenNuevaDto.getTotal());
-		
+
 		detalleOrden.setOrden(orden);
 		detalleOrden.setProducto(producto);
 		return new DetalleOrdenDTO(detalleOrdenRepo.save(detalleOrden));
