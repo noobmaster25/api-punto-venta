@@ -31,7 +31,7 @@ public class ClienteService {
 		Optional<Cliente> clienteCorreo = clienteRepo.findByCorreo(clienteNuevoDto.getCorreo());
 		if (clienteCorreo.isPresent())
 			throw new ConflictException("correo " + clienteNuevoDto.getCorreo() + " ya existe");
-		Cliente clienteNuevo = mapearCliente(clienteNuevoDto);		
+		Cliente clienteNuevo = mapearCliente(clienteNuevoDto);
 		return new ClienteDTO(clienteRepo.save(clienteNuevo));
 	}
 

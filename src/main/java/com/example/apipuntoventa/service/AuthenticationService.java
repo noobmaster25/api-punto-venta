@@ -52,7 +52,6 @@ public class AuthenticationService {
 			
 	}
 	public void registroUsuario(RegistroUsuarioDTO registroUsuarioDto) {
-		System.out.println("hola");
 		Optional<Usuario> usuarioPorUsername = usuarioRepo.findByUserName(registroUsuarioDto.getUsername());
 		Optional<Usuario> usuarioPorCorreo = usuarioRepo.findByEmail(registroUsuarioDto.getEmail());
 		
@@ -75,7 +74,6 @@ public class AuthenticationService {
 			usuarioNuevo.setRoles(roles);
 			
 			usuarioRepo.save(usuarioNuevo);
-		
 		
 	}
 }
