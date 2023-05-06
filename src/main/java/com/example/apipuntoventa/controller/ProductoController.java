@@ -41,6 +41,17 @@ public class ProductoController {
 	public ResponseEntity<ProductoDTO> obtenerPorId(@PathVariable Integer id) {
 		return ResponseEntity.ok(productoService.obtenerPorId(id));
 	}
+	
+	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+	@GetMapping("/filtrar")
+	public ResponseEntity<Page<ProductoDTO>> filtrarProductos(@RequestParam(required = false) String categoira,
+																@RequestParam(name = "precio-minimo",required = false) Double precioMinimo,
+																@RequestParam(name = "precio-max",required = false) Double precioMaximo,
+																@RequestParam(defaultValue = "0") int page,
+																@RequestParam(defaultValue = "10") int size){
+		
+		return ResponseEntity.ok(productoService.filtroProductoPorCategoriaYRangoPrecio(categoira, precioMinimo, precioMaximo, page, size));
+	}
 
 	@PreAuthorize("hasRole('ADMIN')")
 	@PostMapping
