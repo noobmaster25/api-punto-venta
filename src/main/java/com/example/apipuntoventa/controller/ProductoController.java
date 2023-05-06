@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.apipuntoventa.dto.ProductoDTO;
 import com.example.apipuntoventa.dto.ProductoNuevoDTO;
-import com.example.apipuntoventa.service.impl.ProductoServiceImpl;
+import com.example.apipuntoventa.service.IProductoService;
 
 @RestController
 @RequestMapping("/punto-venta-api/v0/productos")
@@ -27,7 +27,7 @@ import com.example.apipuntoventa.service.impl.ProductoServiceImpl;
 public class ProductoController {
 
 	@Autowired
-	private ProductoServiceImpl productoService;
+	private IProductoService productoService;
 
 	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
 	@GetMapping

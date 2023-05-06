@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.apipuntoventa.dto.CategoriaDTO;
 import com.example.apipuntoventa.dto.CategoriaNuevaDTO;
-import com.example.apipuntoventa.service.impl.CategoriaServiceImpl;
+import com.example.apipuntoventa.service.ICategoriaService;
 
 @RestController
 @RequestMapping("/punto-venta-api/v0/categorias")
@@ -27,7 +27,7 @@ import com.example.apipuntoventa.service.impl.CategoriaServiceImpl;
 public class CategoriaController {
 
 	@Autowired
-	private CategoriaServiceImpl categoriaService;
+	private ICategoriaService categoriaService;
 
 	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
 	@GetMapping

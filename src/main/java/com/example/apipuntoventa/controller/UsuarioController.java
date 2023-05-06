@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.apipuntoventa.dto.ActualizarUsuarioDtO;
 import com.example.apipuntoventa.dto.UsuarioDTO;
-import com.example.apipuntoventa.service.impl.UsuarioServiceImpl;
+import com.example.apipuntoventa.service.IUsuarioService;
 
 @RestController
 @RequestMapping("/punto-venta-api/v0/usuarios")
@@ -26,7 +26,7 @@ import com.example.apipuntoventa.service.impl.UsuarioServiceImpl;
 public class UsuarioController {
 	
 	@Autowired
-	private UsuarioServiceImpl usuarioService;
+	private IUsuarioService usuarioService;
 	
 	@GetMapping
 	public ResponseEntity<Page<UsuarioDTO>> obtenerUsuarios(@RequestParam(defaultValue = "0")int page, @RequestParam(defaultValue = "10") int size){
