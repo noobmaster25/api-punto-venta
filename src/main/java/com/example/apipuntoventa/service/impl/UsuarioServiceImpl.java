@@ -1,4 +1,4 @@
-package com.example.apipuntoventa.service;
+package com.example.apipuntoventa.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,9 +20,10 @@ import com.example.apipuntoventa.exceptions.ConflictException;
 import com.example.apipuntoventa.exceptions.NotFoundException;
 import com.example.apipuntoventa.repository.IRolRepository;
 import com.example.apipuntoventa.repository.IUsuarioRepository;
+import com.example.apipuntoventa.service.IUsuarioService;
 
 @Service
-public class UsuarioService {
+public class UsuarioServiceImpl implements IUsuarioService {
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
@@ -33,23 +34,26 @@ public class UsuarioService {
 	@Autowired
 	private IRolRepository rolRepo;
 
-	public Page<UsuarioDTO> obtenerUsuario(int page, int size) {
+	@Override
+	public Page<UsuarioDTO> obtenerTodos(int page, int size) {
 		Pageable pageable = PageRequest.of(page, size);
 		Page<Usuario> usuarios = usuarioRepo.findAll(pageable);
 		return usuarios.map(u -> new UsuarioDTO(u));
 	}
 
+	@Override
 	public UsuarioDTO obtenerPorId(Integer id) {
 		Usuario usuario = usuarioRepo.findById(id)
 				.orElseThrow(() -> new NotFoundException("usuario con id " + id + " no existe"));
 		return new UsuarioDTO(usuario);
 	}
 
+	@Override
 	public UsuarioDTO actualizarUsuario(Integer id, ActualizarUsuarioDtO actualizarUsuarioDto) {
 		Usuario usuario = usuarioRepo.findById(id)
 				.orElseThrow(() -> new NotFoundException("usuario con id " + id + " no existe"));
 
-		verificarEmailyUsernameUsuario(usuario, actualizarUsuarioDto);
+		compararEmailYUsernameAnteriorConNuevo(usuario, actualizarUsuarioDto);
 
 		usuario.setNombre(actualizarUsuarioDto.getNombre());
 		usuario.setApellido(actualizarUsuarioDto.getApellido());
@@ -69,12 +73,14 @@ public class UsuarioService {
 
 	}
 
+	@Override
 	public void eliminarUsuario(Integer id) {
 		usuarioRepo.findById(id).orElseThrow(() -> new NotFoundException("usuario con id " + id + " no existe"));
 		usuarioRepo.deleteById(id);
 	}
 
-	private void verificarEmailyUsernameUsuario(Usuario usuarioViejo, ActualizarUsuarioDtO actualizarUsuarioDto) {
+	private void compararEmailYUsernameAnteriorConNuevo(Usuario usuarioViejo,
+			ActualizarUsuarioDtO actualizarUsuarioDto) {
 
 		Optional<Usuario> usuarioPorUsername = usuarioRepo.findByUserName(actualizarUsuarioDto.getUsername());
 		Optional<Usuario> usuarioPorEmail = usuarioRepo.findByEmail(actualizarUsuarioDto.getEmail());

@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.apipuntoventa.dto.ActualizarUsuarioDtO;
 import com.example.apipuntoventa.dto.UsuarioDTO;
-import com.example.apipuntoventa.service.UsuarioService;
+import com.example.apipuntoventa.service.impl.UsuarioServiceImpl;
 
 @RestController
 @RequestMapping("/punto-venta-api/v0/usuarios")
@@ -26,11 +26,11 @@ import com.example.apipuntoventa.service.UsuarioService;
 public class UsuarioController {
 	
 	@Autowired
-	private UsuarioService usuarioService;
+	private UsuarioServiceImpl usuarioService;
 	
 	@GetMapping
 	public ResponseEntity<Page<UsuarioDTO>> obtenerUsuarios(@RequestParam(defaultValue = "0")int page, @RequestParam(defaultValue = "10") int size){
-		return ResponseEntity.ok(usuarioService.obtenerUsuario(page, size));
+		return ResponseEntity.ok(usuarioService.obtenerTodos(page, size));
 	}
 	@GetMapping("/{id}")
 	public ResponseEntity<UsuarioDTO> obtenerPorId(@PathVariable Integer id){

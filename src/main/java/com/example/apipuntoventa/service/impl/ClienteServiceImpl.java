@@ -1,4 +1,4 @@
-package com.example.apipuntoventa.service;
+package com.example.apipuntoventa.service.impl;
 
 import java.util.Optional;
 
@@ -14,9 +14,10 @@ import com.example.apipuntoventa.entities.Cliente;
 import com.example.apipuntoventa.exceptions.ConflictException;
 import com.example.apipuntoventa.exceptions.NotFoundException;
 import com.example.apipuntoventa.repository.IClienteRepository;
+import com.example.apipuntoventa.service.IClienteService;
 
 @Service
-public class ClienteService {
+public class ClienteServiceImpl implements IClienteService {
 
 	@Autowired
 	private IClienteRepository clienteRepo;
@@ -27,6 +28,7 @@ public class ClienteService {
 		return clientes.map(c -> new ClienteDTO(c));
 	}
 
+	@Override
 	public ClienteDTO guardarCliente(ClienteNuevoDTO clienteNuevoDto) {
 		Optional<Cliente> clienteCorreo = clienteRepo.findByCorreo(clienteNuevoDto.getCorreo());
 		if (clienteCorreo.isPresent())
@@ -35,12 +37,14 @@ public class ClienteService {
 		return new ClienteDTO(clienteRepo.save(clienteNuevo));
 	}
 
+	@Override
 	public ClienteDTO obtenerPorId(Integer id) {
 		Cliente cliente = clienteRepo.findById(id)
 				.orElseThrow(() -> new NotFoundException("cliente con id " + id + "no existe"));
 		return new ClienteDTO(cliente);
 	}
 
+	@Override
 	public ClienteDTO actualizarCliente(Integer id, ClienteNuevoDTO clienteNuevoDto) {
 		Optional<Cliente> clienteCorreo = clienteRepo.findByCorreo(clienteNuevoDto.getCorreo());
 		if (clienteCorreo.isPresent())
@@ -57,6 +61,7 @@ public class ClienteService {
 
 	}
 
+	@Override
 	public void eliminarClientePorId(Integer id) {
 		clienteRepo.findById(id).orElseThrow(() -> new NotFoundException("cliente con id " + id + "no existe"));
 		clienteRepo.deleteById(id);

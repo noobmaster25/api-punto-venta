@@ -1,4 +1,4 @@
-package com.example.apipuntoventa.service;
+package com.example.apipuntoventa.service.impl;
 
 import java.util.Optional;
 
@@ -17,9 +17,10 @@ import com.example.apipuntoventa.exceptions.NotFoundException;
 import com.example.apipuntoventa.repository.IDetalleOrdenRepository;
 import com.example.apipuntoventa.repository.IOrdenRepository;
 import com.example.apipuntoventa.repository.IProductoRepository;
+import com.example.apipuntoventa.service.IDetalleOrdenService;
 
 @Service
-public class DetalleOrdenService {
+public class DetalleOrdenServiceImpl implements IDetalleOrdenService {
 
 	@Autowired
 	private IDetalleOrdenRepository detalleOrdenRepo;
@@ -30,18 +31,21 @@ public class DetalleOrdenService {
 	@Autowired
 	private IOrdenRepository ordenRepo;
 
+	@Override
 	public Page<DetalleOrdenDTO> obtenerDetallesOrden(int page, int size) {
 		Pageable pageable = PageRequest.of(page, size);
 		Page<DetalleOrden> detallesOrden = detalleOrdenRepo.findAll(pageable);
 		return detallesOrden.map(d -> new DetalleOrdenDTO(d));
 	}
 
+	@Override
 	public DetalleOrdenDTO obtenerPorId(Integer id) {
 		DetalleOrden detalleOrden = detalleOrdenRepo.findById(id)
 				.orElseThrow(() -> new NotFoundException("detalle con id " + id + " no encontrado"));
 		return new DetalleOrdenDTO(detalleOrden);
 	}
 
+	@Override
 	public DetalleOrdenDTO guardarDetalleOrden(DetalleOrdenNuevaDTO detalleOrdenNuevaDto) {
 		Producto producto = obtenerProductoPorId(detalleOrdenNuevaDto.getProductoId());
 		Orden orden = obtenerOrdenPorId(detalleOrdenNuevaDto.getOrdenId());
@@ -59,6 +63,7 @@ public class DetalleOrdenService {
 
 	}
 
+	@Override
 	public DetalleOrdenDTO actualizarOrden(Integer id, DetalleOrdenNuevaDTO detalleOrdenNuevaDto) {
 		DetalleOrden detalleOrden = detalleOrdenRepo.findById(id)
 				.orElseThrow(() -> new NotFoundException("detalle con id " + id + " no encontrado"));
@@ -79,18 +84,21 @@ public class DetalleOrdenService {
 
 	}
 
+	@Override
 	public void eliminarDetallePorId(Integer id) {
 		detalleOrdenRepo.findById(id)
 				.orElseThrow(() -> new NotFoundException("detalle con id " + id + " no encontrado"));
 		detalleOrdenRepo.deleteById(id);
 	}
 
-	private Producto obtenerProductoPorId(Integer id) {
+	@Override
+	public Producto obtenerProductoPorId(Integer id) {
 		Optional<Producto> producto = productoRepo.findById(id);
 		return producto.isPresent() ? producto.get() : null;
 	}
 
-	private Orden obtenerOrdenPorId(Integer id) {
+	@Override
+	public Orden obtenerOrdenPorId(Integer id) {
 		Optional<Orden> orden = ordenRepo.findById(id);
 		return orden.isPresent() ? orden.get() : null;
 	}

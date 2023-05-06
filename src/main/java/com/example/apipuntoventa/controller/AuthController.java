@@ -12,14 +12,14 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.apipuntoventa.dto.LoginDTO;
 import com.example.apipuntoventa.dto.RegistroUsuarioDTO;
 import com.example.apipuntoventa.security.JwtAuthenticationResponse;
-import com.example.apipuntoventa.service.AuthenticationService;
+import com.example.apipuntoventa.service.impl.AuthenticationServiceImpl;
 
 @RestController
 @RequestMapping("/punto-venta-api/v0/auth")
 public class AuthController {
 
 	@Autowired
-	private AuthenticationService authenticationService;
+	private AuthenticationServiceImpl authenticationService;
 
 	@PostMapping("/login")
 	public ResponseEntity<?> login(@Valid @RequestBody LoginDTO loginDto) throws InterruptedException {
