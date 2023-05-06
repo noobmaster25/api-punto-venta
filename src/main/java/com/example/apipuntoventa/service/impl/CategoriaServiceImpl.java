@@ -29,6 +29,13 @@ public class CategoriaServiceImpl implements ICategoriaService {
 	}
 
 	@Override
+	public Page<CategoriaDTO> buscarPorNombreOrDescripcion(String query, int page, int size) {
+		Pageable pageable = PageRequest.of(page, size);
+		Page<Categoria> categorias = categoriaRepo.findAllByNombreContainingOrDescripcionContaining(query, query, pageable);
+		return categorias.map(c->new CategoriaDTO(c));
+	}
+	
+	@Override
 	public CategoriaDTO obtenerPorId(Integer id) {
 		Categoria categoria = categoriaRepo.findById(id)
 				.orElseThrow(() -> new NotFoundException("categoria con id " + id + " no encontrado"));
@@ -65,5 +72,7 @@ public class CategoriaServiceImpl implements ICategoriaService {
 		Optional<Categoria> categoria = categoriaRepo.findById(id);
 		return categoria.isEmpty() ? false : true;
 	}
+
+	
 
 }

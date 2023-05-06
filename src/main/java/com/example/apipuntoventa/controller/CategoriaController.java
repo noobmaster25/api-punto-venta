@@ -37,6 +37,15 @@ public class CategoriaController {
 	}
 
 	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+	@GetMapping("/search")
+	public ResponseEntity<Page<CategoriaDTO>> buscarPorNombreOrDescripcion(
+			@RequestParam(defaultValue = "", required = false) String query, @RequestParam(defaultValue = "0") int page,
+			@RequestParam(defaultValue = "10") int size) {
+
+		return ResponseEntity.ok(categoriaService.buscarPorNombreOrDescripcion(query, page, size));
+	}
+
+	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
 	@GetMapping("/{id}")
 	public ResponseEntity<CategoriaDTO> obtenerPorId(@PathVariable Integer id) {
 		return ResponseEntity.ok(categoriaService.obtenerPorId(id));

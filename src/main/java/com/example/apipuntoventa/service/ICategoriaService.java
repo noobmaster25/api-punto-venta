@@ -9,6 +9,8 @@ public interface ICategoriaService {
 
 	Page<CategoriaDTO> obtenerCategorias(int page, int size);
 
+	Page<CategoriaDTO> buscarPorNombreOrDescripcion(String query, int page, int size);
+	
 	CategoriaDTO obtenerPorId(Integer id);
 
 	CategoriaDTO guardarCategoria(CategoriaNuevaDTO categoriaNuevaDto);
