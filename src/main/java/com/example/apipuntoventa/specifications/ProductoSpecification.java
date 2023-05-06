@@ -14,13 +14,12 @@ import com.example.apipuntoventa.entities.Producto;
 
 @Component
 public class ProductoSpecification {
-	
-	public Specification<Producto> filtrarProducto(String categoria,
-													Double precioMinimo,
-													Double precioMaximo){
+
+	public Specification<Producto> filtrarProducto(String categoria, Double precioMinimo, Double precioMaximo) {
+		
 		return (root, query, cb) -> {
 			List<Predicate> predicados = new ArrayList<>();
-			
+
 			if (categoria != null && !categoria.isEmpty()) {
 				Join<Producto, Categoria> joinCategoria = root.join("categoria");
 				predicados.add(cb.equal(joinCategoria.get("nombre"), categoria));
@@ -31,7 +30,7 @@ public class ProductoSpecification {
 			if (precioMaximo != null && precioMaximo < Integer.MAX_VALUE) {
 				predicados.add(cb.lessThan(root.get("precio"), precioMaximo));
 			}
-			
+
 			return cb.and(predicados.toArray(new Predicate[0]));
 		};
 	}

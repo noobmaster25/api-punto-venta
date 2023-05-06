@@ -13,6 +13,8 @@ public interface IProductoService {
 	
 	Page<ProductoDTO> filtroProductoPorCategoriaYRangoPrecio(String categoria, Double precioMinimo, Double precioMaximo, int page, int size);
 	
+	Page<ProductoDTO> buscarPorNombreOrDescripcion(String query, int page, int size);
+	
 	ProductoDTO guardarProducto(ProductoNuevoDTO productoNuevoDto);
 	
 	ProductoDTO actualizarProducto(Integer id,ProductoNuevoDTO productoNuevoDto);

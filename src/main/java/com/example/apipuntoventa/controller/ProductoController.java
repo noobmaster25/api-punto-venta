@@ -52,6 +52,14 @@ public class ProductoController {
 		
 		return ResponseEntity.ok(productoService.filtroProductoPorCategoriaYRangoPrecio(categoira, precioMinimo, precioMaximo, page, size));
 	}
+	
+	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+	@GetMapping("/search")
+	public ResponseEntity<Page<ProductoDTO>> buscarPorNombreOrDescripcion(@RequestParam(defaultValue = "",required = false) String query,
+																			@RequestParam(defaultValue = "0") int page,
+																			@RequestParam(defaultValue = "10") int size){
+		return ResponseEntity.ok(productoService.buscarPorNombreOrDescripcion(query, page, size));
+	}
 
 	@PreAuthorize("hasRole('ADMIN')")
 	@PostMapping

@@ -58,6 +58,13 @@ public class ProductoServiceImpl implements IProductoService {
 	}
 
 	@Override
+	public Page<ProductoDTO> buscarPorNombreOrDescripcion(String query, int page, int size) {
+		Pageable pagebale = PageRequest.of(page, size);
+		Page<Producto> productos = productoRepo.findAllByNombreContainingOrDescripcionContaining(query, query, pagebale);
+		return productos.map(p->new ProductoDTO(p));
+	}
+	
+	@Override
 	public ProductoDTO guardarProducto(ProductoNuevoDTO productoNuevoDto) {
 		Optional<Categoria> categoriaOptional = categoriaRepo.findById(productoNuevoDto.getCategoriaId());
 		if (categoriaOptional.isEmpty())
@@ -92,5 +99,7 @@ public class ProductoServiceImpl implements IProductoService {
 		productoRepo.findById(id).orElseThrow(() -> new NotFoundException("producto con id " + id + " no existe"));
 		productoRepo.deleteById(id);
 	}
+
+	
 
 }
