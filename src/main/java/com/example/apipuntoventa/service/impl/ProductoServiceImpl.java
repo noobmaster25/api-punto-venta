@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import com.example.apipuntoventa.dto.ProductoDTO;
@@ -16,9 +17,13 @@ import com.example.apipuntoventa.exceptions.NotFoundException;
 import com.example.apipuntoventa.repository.ICategoriaRepository;
 import com.example.apipuntoventa.repository.IProductoRepository;
 import com.example.apipuntoventa.service.IProductoService;
+import com.example.apipuntoventa.specifications.ProductoSpecification;
 
 @Service
 public class ProductoServiceImpl implements IProductoService {
+
+	@Autowired
+	private ProductoSpecification productoEspecificacion;
 
 	@Autowired
 	private IProductoRepository productoRepo;
@@ -38,6 +43,18 @@ public class ProductoServiceImpl implements IProductoService {
 		Producto producto = productoRepo.findById(id)
 				.orElseThrow(() -> new NotFoundException("producto con id " + id + " no existe"));
 		return new ProductoDTO(producto);
+	}
+
+	@Override
+	public Page<ProductoDTO> filtroProductoPorCategoriaYRangoPrecio(String categoria, Double precioMinimo,
+			Double precioMaximo, int page, int size) {
+		Pageable pageable = PageRequest.of(page, size);
+
+		Specification<Producto> especificacionProducto = productoEspecificacion.filtrarProducto(categoria, precioMinimo, precioMaximo);
+
+		Page<Producto> productos = productoRepo.findAll(especificacionProducto, pageable);
+
+		return productos.map(p -> new ProductoDTO(p));
 	}
 
 	@Override

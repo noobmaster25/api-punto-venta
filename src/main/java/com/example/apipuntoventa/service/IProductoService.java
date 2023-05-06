@@ -11,6 +11,8 @@ public interface IProductoService {
 	
 	ProductoDTO obtenerPorId(Integer id);
 	
+	Page<ProductoDTO> filtroProductoPorCategoriaYRangoPrecio(String categoria, Double precioMinimo, Double precioMaximo, int page, int size);
+	
 	ProductoDTO guardarProducto(ProductoNuevoDTO productoNuevoDto);
 	
 	ProductoDTO actualizarProducto(Integer id,ProductoNuevoDTO productoNuevoDto);
