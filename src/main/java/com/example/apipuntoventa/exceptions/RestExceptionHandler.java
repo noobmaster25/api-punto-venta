@@ -65,6 +65,12 @@ public class RestExceptionHandler {
 		return new ErrorMessage(HttpStatus.NOT_FOUND.value(),ex);
 	}
 	
+	@ExceptionHandler({ConflictException.class})
+	@ResponseBody ErrorMessage conflictException(Exception ex) {
+		return new ErrorMessage(HttpStatus.CONFLICT.value(), ex);
+	}
+	
+	
 	@ExceptionHandler(Exception.class)
 	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
 	@ResponseBody
