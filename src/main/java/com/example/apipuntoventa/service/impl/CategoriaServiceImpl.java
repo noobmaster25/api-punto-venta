@@ -3,6 +3,7 @@ package com.example.apipuntoventa.service.impl;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 import com.example.apipuntoventa.dto.CategoriaDTO;
 import com.example.apipuntoventa.dto.CategoriaNuevaDTO;
 import com.example.apipuntoventa.entities.Categoria;
+import com.example.apipuntoventa.exceptions.ConflictException;
 import com.example.apipuntoventa.exceptions.NotFoundException;
 import com.example.apipuntoventa.repository.ICategoriaRepository;
 import com.example.apipuntoventa.service.ICategoriaService;
@@ -64,7 +66,12 @@ public class CategoriaServiceImpl implements ICategoriaService {
 	public void eliminarCategoriaPorId(Integer id) {
 		if (!existeCategoriaPorId(id))
 			throw new NotFoundException("categoria con id " + id + " no encontrado");
-		categoriaRepo.deleteById(id);
+		
+		try {
+			categoriaRepo.deleteById(id);			
+		} catch (DataIntegrityViolationException ex) {
+			throw new ConflictException("Esta categoria no se puede eliminar, existen elemetnos asociados a ella");
+		}
 	}
 
 	@Override

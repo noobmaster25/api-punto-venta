@@ -64,9 +64,11 @@ public class RestExceptionHandler {
 	public ErrorMessage notFoundException (Exception ex) {
 		return new ErrorMessage(HttpStatus.NOT_FOUND.value(),ex);
 	}
-	
 	@ExceptionHandler({ConflictException.class})
-	@ResponseBody ErrorMessage conflictException(Exception ex) {
+	@ResponseStatus(HttpStatus.CONFLICT)
+	@ResponseBody 
+	public ErrorMessage conflictException(Exception ex) {
+		System.out.println("error de conflicto");
 		return new ErrorMessage(HttpStatus.CONFLICT.value(), ex);
 	}
 	

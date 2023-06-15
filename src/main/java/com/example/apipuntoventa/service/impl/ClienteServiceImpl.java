@@ -47,11 +47,16 @@ public class ClienteServiceImpl implements IClienteService {
 	@Override
 	public ClienteDTO actualizarCliente(Integer id, ClienteNuevoDTO clienteNuevoDto) {
 		Optional<Cliente> clienteCorreo = clienteRepo.findByCorreo(clienteNuevoDto.getCorreo());
-		if (clienteCorreo.isPresent())
-			throw new ConflictException("correo " + clienteNuevoDto.getCorreo() + " ya existe");
-
+		
 		Cliente cliente = clienteRepo.findById(id)
 				.orElseThrow(() -> new NotFoundException("cliente con id " + id + "no existe"));
+		
+		if (clienteCorreo.isPresent())
+			if(clienteCorreo.get().getId() != cliente.getId())
+			throw new ConflictException("correo " + clienteNuevoDto.getCorreo() + " ya existe");
+
+		
+		
 		cliente.setNombre(clienteNuevoDto.getNombre());
 		cliente.setDireccion(clienteNuevoDto.getDireccion());
 		cliente.setTelefono(clienteNuevoDto.getTelefono());
