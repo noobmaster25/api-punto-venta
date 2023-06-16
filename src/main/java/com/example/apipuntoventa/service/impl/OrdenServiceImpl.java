@@ -69,6 +69,9 @@ public class OrdenServiceImpl implements IOrdenService {
 			if (producto == null)
 				throw new NotFoundException("producto con id " + detalleOrdenNuevaDto.getProductoId() + " no existe");
 
+			producto.setCantidad(producto.getCantidad() - detalleOrdenNuevaDto.getCantidad());
+			productoRepo.save(producto);
+			
 			DetalleOrden detalleOrdenNueva = mapearDetalleOrden(detalleOrdenNuevaDto, ordenNueva, producto);
 			detalleOrdenRepo.save(detalleOrdenNueva);
 
