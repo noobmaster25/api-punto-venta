@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -16,7 +15,6 @@ import com.example.apipuntoventa.dto.LoginDTO;
 import com.example.apipuntoventa.dto.RegistroUsuarioDTO;
 import com.example.apipuntoventa.entities.Rol;
 import com.example.apipuntoventa.entities.Usuario;
-
 import com.example.apipuntoventa.exceptions.ConflictException;
 import com.example.apipuntoventa.repository.IRolRepository;
 import com.example.apipuntoventa.repository.IUsuarioRepository;
@@ -26,20 +24,24 @@ import com.example.apipuntoventa.service.IAuthenticationService;
 @Service
 public class AuthenticationServiceImpl implements IAuthenticationService {
 
-	@Autowired
 	private AuthenticationManager authenticationManager;
 
-	@Autowired
 	private JwtTokenProvider jwtProvider;
 
-	@Autowired
 	private PasswordEncoder passwordEncoder;
 
-	@Autowired
 	private IUsuarioRepository usuarioRepo;
 
-	@Autowired
 	private IRolRepository rolRepo;
+
+	public AuthenticationServiceImpl(AuthenticationManager authenticationManager, JwtTokenProvider jwtProvider,
+			PasswordEncoder passwordEncoder, IUsuarioRepository usuarioRepo, IRolRepository rolRepo) {
+		this.authenticationManager = authenticationManager;
+		this.jwtProvider = jwtProvider;
+		this.passwordEncoder = passwordEncoder;
+		this.usuarioRepo = usuarioRepo;
+		this.rolRepo = rolRepo;
+	}
 
 	@Override
 	public String logeoPorUsuarioContrasenia(LoginDTO loginDto) {

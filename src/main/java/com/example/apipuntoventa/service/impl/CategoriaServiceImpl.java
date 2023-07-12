@@ -2,7 +2,6 @@ package com.example.apipuntoventa.service.impl;
 
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -20,8 +19,11 @@ import com.example.apipuntoventa.service.ICategoriaService;
 @Service
 public class CategoriaServiceImpl implements ICategoriaService {
 
-	@Autowired
 	private ICategoriaRepository categoriaRepo;
+	
+	public CategoriaServiceImpl(ICategoriaRepository categoriaRepo) {
+		this.categoriaRepo = categoriaRepo;
+	}
 
 	@Override
 	public Page<CategoriaDTO> obtenerCategorias(int page, int size) {

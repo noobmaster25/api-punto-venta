@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -25,14 +24,18 @@ import com.example.apipuntoventa.service.IUsuarioService;
 @Service
 public class UsuarioServiceImpl implements IUsuarioService {
 
-	@Autowired
 	private PasswordEncoder passwordEncoder;
 
-	@Autowired
 	private IUsuarioRepository usuarioRepo;
 
-	@Autowired
 	private IRolRepository rolRepo;
+
+	
+	public UsuarioServiceImpl(PasswordEncoder passwordEncoder, IUsuarioRepository usuarioRepo, IRolRepository rolRepo) {
+		this.passwordEncoder = passwordEncoder;
+		this.usuarioRepo = usuarioRepo;
+		this.rolRepo = rolRepo;
+	}
 
 	@Override
 	public Page<UsuarioDTO> obtenerTodos(int page, int size) {

@@ -2,7 +2,6 @@ package com.example.apipuntoventa.service.impl;
 
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -22,14 +21,18 @@ import com.example.apipuntoventa.service.IDetalleOrdenService;
 @Service
 public class DetalleOrdenServiceImpl implements IDetalleOrdenService {
 
-	@Autowired
 	private IDetalleOrdenRepository detalleOrdenRepo;
 
-	@Autowired
 	private IProductoRepository productoRepo;
 
-	@Autowired
 	private IOrdenRepository ordenRepo;
+	
+	public DetalleOrdenServiceImpl(IDetalleOrdenRepository detalleOrdenRepo, IProductoRepository productoRepo,
+			IOrdenRepository ordenRepo) {
+		this.detalleOrdenRepo = detalleOrdenRepo;
+		this.productoRepo = productoRepo;
+		this.ordenRepo = ordenRepo;
+	}
 
 	@Override
 	public Page<DetalleOrdenDTO> obtenerDetallesOrden(int page, int size) {

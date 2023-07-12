@@ -2,7 +2,6 @@ package com.example.apipuntoventa.controller;
 
 import javax.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,9 +24,12 @@ import com.example.apipuntoventa.service.IClienteService;
 @RequestMapping("/punto-venta-api/v0/clientes")
 @PreAuthorize("authenticated")
 public class ClienteController {
-
-	@Autowired
+	
 	private IClienteService clienteService;
+
+	public ClienteController(IClienteService clienteService) {
+		this.clienteService = clienteService;
+	}
 
 	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
 	@GetMapping
@@ -40,6 +42,13 @@ public class ClienteController {
 	@GetMapping("/{id}")
 	public ResponseEntity<ClienteDTO> obtenerPorId(@PathVariable Integer id) {
 		return ResponseEntity.ok(clienteService.obtenerPorId(id));
+	}
+	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+	@GetMapping("/search")
+	public ResponseEntity<Page<ClienteDTO>> obtenerPorNombre(@RequestParam(defaultValue = "",required=false) String query,
+			@RequestParam(defaultValue = "0") int page,
+			@RequestParam(defaultValue = "10") int size){
+		return ResponseEntity.ok(clienteService.obtenerClientesPorNombre(query, page, size));
 	}
 
 	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")

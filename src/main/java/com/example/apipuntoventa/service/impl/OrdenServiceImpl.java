@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -28,17 +27,22 @@ import com.example.apipuntoventa.service.IOrdenService;
 @Service
 public class OrdenServiceImpl implements IOrdenService {
 
-	@Autowired
 	private IOrdenRepository ordenRepo;
 
-	@Autowired
 	private IClienteRepository clienteRepo;
 
-	@Autowired
 	private IProductoRepository productoRepo;
 
-	@Autowired
 	private IDetalleOrdenRepository detalleOrdenRepo;
+	
+	
+	public OrdenServiceImpl(IOrdenRepository ordenRepo, IClienteRepository clienteRepo,
+			IProductoRepository productoRepo, IDetalleOrdenRepository detalleOrdenRepo) {
+		this.ordenRepo = ordenRepo;
+		this.clienteRepo = clienteRepo;
+		this.productoRepo = productoRepo;
+		this.detalleOrdenRepo = detalleOrdenRepo;
+	}
 
 	@Override
 	public Page<OrdenDTO> obtenerOrdenes(int page, int size) {

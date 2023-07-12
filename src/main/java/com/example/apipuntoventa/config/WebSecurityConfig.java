@@ -2,10 +2,8 @@ package com.example.apipuntoventa.config;
 
 import java.util.Arrays;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -29,17 +27,21 @@ import com.example.apipuntoventa.security.UserDetailServiceImpl;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 
-	
-	
-	@Autowired
 	private UserDetailServiceImpl userDetailService;
 	
-	@Autowired
 	private JwtAuthenticationEntryPoint JwtAuthenticationEntryPoint;
 	
-	@Autowired
 	private JwtAuthenticationFilter jwtAuthenticationFilter;
 	
+	public WebSecurityConfig(UserDetailServiceImpl userDetailService,
+			JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint,
+			JwtAuthenticationFilter jwtAuthenticationFilter) {
+		
+		this.userDetailService = userDetailService;
+		this.JwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
+		this.jwtAuthenticationFilter = jwtAuthenticationFilter;
+	}
+
 	@Bean
 	public PasswordEncoder passwordEnconder() {
 		return new BCryptPasswordEncoder();

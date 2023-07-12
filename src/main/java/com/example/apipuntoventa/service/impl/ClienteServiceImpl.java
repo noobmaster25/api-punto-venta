@@ -2,7 +2,6 @@ package com.example.apipuntoventa.service.impl;
 
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -19,8 +18,12 @@ import com.example.apipuntoventa.service.IClienteService;
 @Service
 public class ClienteServiceImpl implements IClienteService {
 
-	@Autowired
 	private IClienteRepository clienteRepo;
+	
+	public ClienteServiceImpl(IClienteRepository clienteRepo) {
+
+		this.clienteRepo = clienteRepo;
+	}
 
 	public Page<ClienteDTO> obtenerClientes(int page, int size) {
 		Pageable pagebale = PageRequest.of(page, size);
@@ -45,18 +48,23 @@ public class ClienteServiceImpl implements IClienteService {
 	}
 
 	@Override
+	public Page<ClienteDTO> obtenerClientesPorNombre(String query, int page, int size) {
+		Pageable pageable = PageRequest.of(page, size);
+		Page<Cliente> clientes = clienteRepo.findAllByNombreContaining(query, pageable);
+		return clientes.map(c -> new ClienteDTO(c));
+	}
+
+	@Override
 	public ClienteDTO actualizarCliente(Integer id, ClienteNuevoDTO clienteNuevoDto) {
 		Optional<Cliente> clienteCorreo = clienteRepo.findByCorreo(clienteNuevoDto.getCorreo());
-		
+
 		Cliente cliente = clienteRepo.findById(id)
 				.orElseThrow(() -> new NotFoundException("cliente con id " + id + "no existe"));
-		
-		if (clienteCorreo.isPresent())
-			if(clienteCorreo.get().getId() != cliente.getId())
-			throw new ConflictException("correo " + clienteNuevoDto.getCorreo() + " ya existe");
 
-		
-		
+		if (clienteCorreo.isPresent())
+			if (clienteCorreo.get().getId() != cliente.getId())
+				throw new ConflictException("correo " + clienteNuevoDto.getCorreo() + " ya existe");
+
 		cliente.setNombre(clienteNuevoDto.getNombre());
 		cliente.setDireccion(clienteNuevoDto.getDireccion());
 		cliente.setTelefono(clienteNuevoDto.getTelefono());
@@ -78,4 +86,5 @@ public class ClienteServiceImpl implements IClienteService {
 
 		return clienteNuevo;
 	}
+
 }

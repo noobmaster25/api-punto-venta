@@ -2,7 +2,6 @@ package com.example.apipuntoventa.service.impl;
 
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -22,14 +21,18 @@ import com.example.apipuntoventa.specifications.ProductoSpecification;
 @Service
 public class ProductoServiceImpl implements IProductoService {
 
-	@Autowired
 	private ProductoSpecification productoEspecificacion;
 
-	@Autowired
 	private IProductoRepository productoRepo;
 
-	@Autowired
 	private ICategoriaRepository categoriaRepo;
+	
+	public ProductoServiceImpl(ProductoSpecification productoEspecificacion, IProductoRepository productoRepo,
+			ICategoriaRepository categoriaRepo) {
+		this.productoEspecificacion = productoEspecificacion;
+		this.productoRepo = productoRepo;
+		this.categoriaRepo = categoriaRepo;
+	}
 
 	@Override
 	public Page<ProductoDTO> obtenerProductos(int page, int size) {

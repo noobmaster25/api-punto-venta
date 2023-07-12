@@ -2,7 +2,6 @@ package com.example.apipuntoventa.controller;
 
 import javax.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,8 +25,11 @@ import com.example.apipuntoventa.service.IProductoService;
 @PreAuthorize("authenticated")
 public class ProductoController {
 
-	@Autowired
 	private IProductoService productoService;
+
+	public ProductoController(IProductoService productoService) {
+		this.productoService = productoService;
+	}
 
 	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
 	@GetMapping

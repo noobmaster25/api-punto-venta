@@ -2,7 +2,6 @@ package com.example.apipuntoventa.controller;
 
 import javax.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,8 +17,11 @@ import com.example.apipuntoventa.service.IAuthenticationService;
 @RequestMapping("/punto-venta-api/v0/auth")
 public class AuthController {
 
-	@Autowired
 	private IAuthenticationService authenticationService;
+
+	public AuthController(IAuthenticationService authenticationService) {
+		this.authenticationService = authenticationService;
+	}
 
 	@PostMapping("/login")
 	public ResponseEntity<?> login(@Valid @RequestBody LoginDTO loginDto) throws InterruptedException {

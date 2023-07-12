@@ -3,7 +3,6 @@ package com.example.apipuntoventa.security;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -19,9 +18,12 @@ import com.example.apipuntoventa.repository.IUsuarioRepository;
 @Service
 public class UserDetailServiceImpl implements UserDetailsService {
 
-	@Autowired
 	private IUsuarioRepository usuarioRepo;
 	
+	public UserDetailServiceImpl(IUsuarioRepository usuarioRepo) {
+		this.usuarioRepo = usuarioRepo;
+	}
+
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		Usuario usuario = usuarioRepo.findByUserName(username).orElseThrow(()-> new UsernameNotFoundException("usuario no encontrado"));

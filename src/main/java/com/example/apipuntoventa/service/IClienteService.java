@@ -8,6 +8,8 @@ import com.example.apipuntoventa.dto.ClienteNuevoDTO;
 public interface IClienteService {
 
 	Page<ClienteDTO> obtenerClientes(int page, int size);
+	
+	Page<ClienteDTO> obtenerClientesPorNombre(String query, int page, int size);
 
 	ClienteDTO guardarCliente(ClienteNuevoDTO clienteNuevoDto);
 
